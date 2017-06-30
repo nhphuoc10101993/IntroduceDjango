@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Permissions</title>
+</head>
+<body>
+    {% block content %}
+        {% block javascript %}
+            <script>
+                function getList(){
+                    var checkedValue = "";
+                    var inputElements = document.getElementsByClassName('messagecheck');
+                    for(var i=0; inputElements[i]; ++i){
+                        if(inputElements[i].checked){
+                            checkedValue = inputElements[i].value + ":"+ checkedValue;
+                        }
+                    }
+                    document.getElementById("txtValue").value = checkedValue.slice(0,-1);
+                }
+                function getConfirmDelete(){
+                    var answer = confirm("Are you sure delete it?");
+                    if (answer){
+                        getList();
+                    }
+                }
+            </script>
+        {% endblock %}
+        <div class="container">
+            {% if user.is_superuser %}
+                <p>This user is supper user.So,don't need create permission for it...</p>
+            {% else %}
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Create permssion for : {{ user }}</button>
+                <br>
+                <br>
+                <form action="{% url 'delete_object_selected' %}" method="POST">{% csrf_token %}
+                    <button type="submit" onclick="getConfirmDelete()" class="btn btn-danger" id="btnGetList">Delete objects</button>
+                    <input type="text" name="txtValue" id="txtValue" hidden>
+                </form>
+                <br/>
+                <form action="{% url 'remove_all_permission' %}" method="POST">{% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Remove All</button>
+                </form>
+                <br>
+                <br/>
+                <table class="table table-bordered table-hover -sort-asc">
+                    <tr>
+                        <td align="center">Check</td>
+                        <th>Id</th>
+                        <th>Code name</th>
+                        <th>Name</th>
+                        <td align="center">Function</td>
+                    </tr>
+                    <tbody>
+                        {% for itemPerm in permList %}
+                            <tr>
+                                <td align="center"><input type="checkbox" class="messagecheck" name="checkData" value="{{ itemPerm.id }}"></td>
+                                <td>{{ itemPerm.id }}</td>
+                                <td>{{ itemPerm.codename }}</td>
+                                <td>{{ itemPerm.name }}</td>
+                                <td align="center">
+                                    <form action="{% url 'delete_perm' %}" method="POST">{% csrf_token %}
+                                        <input type="text" value="{{ itemPerm.id }}" name="txt_perm" id="txt_perm" hidden="hidden">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                 <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add new permission for {{ user }}</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" action="{% url 'add_perm' %}"> {% csrf_token %}
+                            <label for="listPermission">Choose permission:</label>
+                            <select id="listPermission" name="listPermission" title="listPermission">
+                                {% for item in listPerms %}
+                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-danger">Create</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                    </div>
+                 </div>
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add new permission for {{ user }}</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post" action="{% url 'add_perm' %}"> {% csrf_token %}
+                            <label for="listPermission">Choose permission:</label>
+                            <select id="listPermission" name="listPermission" title="listPermission">
+                                {% for item in listPerms %}
+                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-danger">Create</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                    </div>
+                 </div>
+                {% endif %}
+            </div>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,99 @@
+.menu {
+  display: inline-block;
+  margin: 0 auto;
+  margin-top: 100px;
+  list-style-type: none;
+}
+
+.menu a {
+  display: block;
+  margin: 0;
+  padding: 16px 25px;
+  color: #333;
+  text-decoration: none;
+  background-color: lightseagreen;;
+}
+
+.menu li {
+  position: relative;
+  float: left;
+  margin: 0;
+  border-left: 1px solid #eee;
+  -webkit-perspective: 200;
+  perspective: 200;
+}
+
+.menu li:first-child { border-left: none; }
+
+.menu li.parent:before {
+  content: '';
+  z-index: 200;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: -4px;
+  margin-left: -20px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 20px 0 20px;
+  border-color: lightseagreen transparent transparent transparent;
+  -webkit-transition: margin-top .1s ease-out;
+  transition: margin-top .1s ease-out;
+}
+
+.menu li:hover > a,
+.menu li:focus > a {
+  text-decoration: none;
+  color: #fff;
+  background-color: #333;
+}
+
+.menu li:hover:before,
+.menu li:focus:before {
+  margin-top: 0;
+  border-top-color: #333;
+}
+.menu li:hover .children,
+.menu li:focus .children {
+  opacity: 1;
+  -webkit-transform: rotateX(0) translateZ(0);
+  transform: rotateX(0) translateZ(0);
+}
+
+.menu .children {
+  opacity: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform-origin: top center;
+  -ms-transform-origin: top center;
+  transform-origin: top center;
+  -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.17, 0.67, 0.59, 1.21), opacity 0.1s 0.1s;
+  transition: transform 0.4s cubic-bezier(0.17, 0.67, 0.59, 1.21), opacity 0.1s 0.1s;
+  z-index: 100;
+  list-style-type: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 200px;
+  margin: 0;
+  padding: 10px 0;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.menu .children li { float: none; }
+
+.menu .children a { background-color: transparent; }
+
+.menu .children a:hover,
+.menu .children a:focus {
+  color: #333;
+  background-color: lightskyblue;
+}

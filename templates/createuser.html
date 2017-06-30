@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+        {% block javascript %}
+            <script>
+                $("#id_username").change(function(){
+                   var username = $(this).val();
+                    $.ajax({
+                        url : '{% url "validate_login" %}',
+                        data : {
+                           'username':username
+                        },
+                        dataType : 'json',
+                        success: function(data){
+                            if (data.is_taken) {
+                                alert("This user is exist in database..")
+                            }
+                        }
+                    });
+                });
+            </script>
+        {% endblock %}
+        {% block content %}
+            <div class="container">
+            {% if perms.auth.add_user %}
+                 <form method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Create User</button>
+                </form>
+            {% else %}
+                <p>You haven't permission to add new user...</p>
+            {% endif %}
+            </div>
+        {% endblock %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+    {% block content %}
+        <div class="container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Description</td>
+                        <td>Images</td>
+                        <td align="center">Remove</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for image in list_image %}
+                        <tr>
+                            <td>{{ image.id }}</td>
+                            <td>{{ image.description }}</td>
+                            <td><img src="..{{ image.doc.url }}" height="200px" width="300px" /></td>
+                            <td align="center">
+                                <form action="{% url 'delete_document' %}" method="POST">{% csrf_token %}
+                                    <input type="text" id="txtIdDoc" name="txtIdDoc" value="{{ image.id }}" hidden="hidden">
+                                    <input type="text" id="txtPath" name="txtPath" value="{{ image.doc.path }}" hidden="hidden">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Info</title>
+</head>
+<body>
+    {% block content %}
+        <div class="container">
+            {% for item in book_list %}
+                <p>{{ item.title }}</p>
+                <p>{% for item2 in item.authors.all %}</p>
+                      <h3>{{ item2.first_name }}</h3>
+                    {% endfor %}
+                <p>{{ item.publisher.address }}</p>
+                <p>{{ item.publication_date }}</p>
+            {% endfor %}
+        </div>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    {% block content %}
+        <div class="container">
+            <h3>Hello User: {{ user }}</h3>
+            <h3>Session User : {{ session_user }}</h3>
+        </div>
+    {% endblock %}
+</body>
+</html>
